@@ -9,11 +9,15 @@ Sample usage:
 To get syntax of the command:
 
 [smartuser]$ ./brewster.py -h
+
 usage: brewster.py [-h] [-s] [-a ADDR]
 
 optional arguments:
+
   -h, --help            show this help message and exit
+  
   -s, --scan            Discover all available Brewometers. Must run as root!
+  
   -a ADDR, --addr ADDR  Read specified device. Get ADDR by running: sudo brewster.py -s
 
 
