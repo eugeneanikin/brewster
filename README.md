@@ -16,6 +16,7 @@ optional arguments:
   -s, --scan            Discover all available Brewometers. Must run as root!
   -a ADDR, --addr ADDR  Read specified device. Get ADDR by running: sudo brewster.py -s
 
+
 To find out address of your brewometer(s):
 
 [smartuser]$ sudo ./brewster.py -s
