@@ -1,12 +1,15 @@
 # brewster
 Really inofficial brewometer scanner software. 
+==============================================
 
-It is based on bluepy (bluez) package by IanHarvey. There might be some other dependencies which I'll enumerate later. I've tested it on Raspberry PI 3 running Ubuntu Mate 1.12.1.
+It is based on and requires bluepy (bluez) package by IanHarvey. There might be some other dependencies which I'll enumerate later. I've tested it on Raspberry PI 3 running Ubuntu Mate 1.12.1.
 
 
 Sample usage:
+=============
 
 To get syntax of the command:
+-----------------------------
 
 [smartuser]$ ./brewster.py -h
 
@@ -22,6 +25,7 @@ optional arguments:
 
 
 To find out address of your brewometer(s):
+------------------------------------------
 
 [smartuser]$ sudo ./brewster.py -s
 
@@ -31,6 +35,9 @@ Scanning for devices...
 
     Brew Device : d0:39:72:d3:4e:dd (public), -72 dBm (not connectable)
 
+
+To read measurements from your brewometer:
+------------------------------------------
 
  [smartuser]$ ./brewster.py -a d0:39:72:d3:4e:dd
  
