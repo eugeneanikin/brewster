@@ -24,18 +24,28 @@ optional arguments:
 To find out address of your brewometer(s):
 
 [smartuser]$ sudo ./brewster.py -s
+
 [sudo] password for smartuser: 
+
 Scanning for devices...
+
     Brew Device : d0:39:72:d3:4e:dd (public), -72 dBm (not connectable)
 
 
  [smartuser]$ ./brewster.py -a d0:39:72:d3:4e:dd
+ 
     Reading Brewometer: d0:39:72:d3:4e:dd
+    
     Time:  2016-06-07 21:34
+    
     Type:  10
+    
     Temperature:  72
+    
     Measured:  122
+    
     Gravity:  1.102
+    
     Battery:  26 %
 
 That's about all. Have fun and brew some ales!
