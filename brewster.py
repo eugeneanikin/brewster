@@ -223,9 +223,32 @@ class BrewDB():
         self.timestamp_brew(brew_id)
         self.cur.execute("INSERT INTO measurements values(?,?,?,?,?,?,?,?)", (d_id, brew_id, u_time, s_time, d_temp, grav_meas, grav_calc, batt_volt))
         self.db.commit()
-
         return
         
+    def print_device_info(self, doall):
+        if (doall):
+            self.cur.execute('SELECT d_id, adr, color, name, brew_id FROM brewometers')
+        else:
+            self.cur.execute('SELECT d_id, adr, color, name, brew_id FROM brewometers WHERE brew_id > 0')
+        for binfo in self.cur.fetchall():
+            (d_id, adr, color, name, brew_id) = binfo
+            string = 'Brewometer #' + str(d_id) + ' "' + ANSI_RED + name + ANSI_OFF + '" (' + adr.decode('utf-8') + ')' 
+            if brew_id > 0:
+                string += ' Running brew number ' + str(brew_id)
+            print (string)
+        return
+
+    def print_brew_info(self, doall):
+        if (doall):
+            self.cur.execute('SELECT brew_id, name, started_time_txt, last_update FROM brews')
+        else:
+            self.cur.execute('SELECT brews.brew_id, brews.name, started_time_txt, last_update FROM brews INNER JOIN brewometers ON brews.brew_id = brewometers.brew_id')
+        for binfo in self.cur.fetchall():
+            (brew_id, name, started_time_txt, last_update) = binfo
+            if last_update == '':  last_update = 'N/A' 
+            string = 'Brew #' + str(brew_id) + ' "' + ANSI_RED + name + ANSI_OFF + '" started: ' + started_time_txt + ', last updated: ' + last_update
+            print (string)
+        return
         
 # end class BrewDB
 
@@ -275,7 +298,7 @@ def main():
                         default="",
                         help='Read specified device. Get ADDR by running: sudo brewster.py -s')
     parser.add_argument('-i', '--info', action='store', type=str,
-                        help='Query database. Use: [-i dev] for devices, [-i brews] for brews.')
+                        help='Query database. Use: [-i devs | -i alldevs] for devices, [-i brews | -i allbrews ] for brews.')
     parser.add_argument('-db', '--dbase', action='store_true', 
                         help='Store scanned data in sqlite database file.')
     parser.add_argument('-bon', '--brew-on', type=int, default=0,
@@ -361,7 +384,24 @@ def main():
 
     # Database query mode.
     if arg.info:
-        print ("Query mode")
+        if arg.info == "devs" or arg.info == "alldevs":
+            doall = False
+            if arg.info == "alldevs":
+                doall = True 
+                print ("Known devices:")
+            else:
+                print ("Enabled devices:")
+            BDB.print_device_info(doall)
+        elif arg.info == "brews" or arg.info == "allbrews":
+            doall = False
+            if arg.info == "allbrews":
+                doall = True 
+                print ("All brews:")
+            else:
+                print ("Known brews:")
+            BDB.print_brew_info(doall)
+        else:
+            print ("Strange argument:", arg.info)
         return
 
     # Database update mode. Look for all registered devices, try to connect to them and save measured data
